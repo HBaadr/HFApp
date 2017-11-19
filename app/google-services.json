@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "84775390704",
+    "firebase_url": "https://hiddenfounders-ea80d.firebaseio.com",
+    "project_id": "hiddenfounders-ea80d",
+    "storage_bucket": "hiddenfounders-ea80d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:84775390704:android:7ce3fd3966ed77b9",
+        "android_client_info": {
+          "package_name": "com.badr.hourimeche.hiddenfounders"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "84775390704-bn26c21gdnptis3p1u18l0o4912c9q8r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.badr.hourimeche.hiddenfounders",
+            "certificate_hash": "e2ca72ad40127a11376c35f07a026dbaf447c3bb"
+          }
+        },
+        {
+          "client_id": "84775390704-378kv3obdfhunl6ap3n2bhs4dqsufdp6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCT9KV4if8eG5kGmHn8L7HQDeDrebaWzng"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "84775390704-378kv3obdfhunl6ap3n2bhs4dqsufdp6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

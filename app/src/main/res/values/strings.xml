@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HiddenFounders</string>
+    <string name="fb_id">151370628927301</string>
+    <string name="logout">SE DÉCONNECTER</string>
+    <string name="login">SE CONNECTER À FACEBOOK</string>
+</resources>
+
