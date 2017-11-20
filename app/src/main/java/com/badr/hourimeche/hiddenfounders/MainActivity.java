@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         //Button de connexion
         btnLogin = (LoginButton) findViewById(R.id.login_button);
         btnLogin.setLoginBehavior(LoginBehavior.NATIVE_WITH_FALLBACK);
-//        btnLogin.setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY);
         List<String> permissions = new ArrayList<>();
         permissions.add("public_profile");
         permissions.add("email");
