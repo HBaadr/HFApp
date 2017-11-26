@@ -1,5 +1,6 @@
 package com.badr.hourimeche.hiddenfounders.adapters;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -62,7 +63,7 @@ public class FirebaseAdapter extends AsyncTask<String, Void, byte[]> {
         StorageReference riversRef = mStorageRef.child(userName.concat(" - ").concat(albumName).concat(" - ").concat(String.valueOf(photoNum)).concat(".jpg"));
         Toasty.success(mContext, "Image N° " + String.valueOf(photoNum) + " de l'Album " + albumName + " est chargé sur Firebase.").show();
         UploadTask uploadTask = riversRef.putBytes(bytes);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        uploadTask.addOnSuccessListener((Activity) mContext, new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 progressDialog.dismiss();

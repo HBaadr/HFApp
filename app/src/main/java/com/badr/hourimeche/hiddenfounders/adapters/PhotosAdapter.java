@@ -13,6 +13,7 @@ import com.badr.hourimeche.hiddenfounders.FullscreenActivity;
 import com.badr.hourimeche.hiddenfounders.R;
 import com.badr.hourimeche.hiddenfounders.models.PhotosModel;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -37,7 +38,15 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
     @Override
     public void onBindViewHolder(final PhotosViewHolder holder, int position) {
         final PhotosModel albumModel = imageAlbumModels.get(position);
-        Glide.with(mContext).load(albumModel.getUrlImage()).placeholder(R.drawable.wait).into(holder.iv_Photo);
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.wait);
+        requestOptions.error(R.drawable.error);
+
+        Glide.with(mContext)
+                .setDefaultRequestOptions(requestOptions)
+                .load(albumModel.getUrlImage())
+                .into(holder.iv_Photo);
         holder.cvRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -107,27 +107,30 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
+                Bundle bundle = new Bundle();
+                bundle.putString("fields", "name,email");
+                new GraphRequest(
+                        AccessToken.getCurrentAccessToken(),
+                        "/" + AccessToken.getCurrentAccessToken().getUserId(),
+                        bundle,
+                        HttpMethod.GET,
+                        new GraphRequest.Callback() {
                             @Override
-                            public void onCompleted(JSONObject object, GraphResponse response) {
+                            public void onCompleted(GraphResponse response) {
+                                JSONObject data = response.getJSONObject();
                                 //obtenir le nom, l'email, et la photo de profil et les stocker dans SharedPreferences
                                 myEditor = getSharedPreferences("crd", MODE_PRIVATE).edit();
                                 try {
-                                    myEditor.putString("id", object.optString("id"));
-                                    myEditor.putString("fbName", object.optString("name"));
-                                    myEditor.putString("fbEmail", object.optString("email"));
-                                } catch (Exception ignored) {}
+                                    myEditor.putString("id", data.get("id").toString());
+                                    myEditor.putString("fbName", data.get("name").toString());
+                                    myEditor.putString("fbEmail", data.get("email").toString());
+                                } catch (Exception ignored) {
+                                }
                                 myEditor.apply();
                                 uploadInfos();
                                 checkConnexion();
                             }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email");
-                request.setParameters(parameters);
-                request.executeAsync();
+                        }).executeAsync();
             }
 
             @Override
@@ -146,26 +149,24 @@ public class MainActivity extends AppCompatActivity {
     private void uploadImages(final String albumID, final String nameAlb) {
         Bundle bundle = new Bundle();
         bundle.putString("fields", "images");
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + albumID + "/photos",
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + albumID + "/photos",
                 bundle,
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
                     @Override
                     public void onCompleted(GraphResponse response) {
                         try {
-                            if (response.getError() == null) {
-                                JSONObject data = response.getJSONObject();
-                                if (data.has("data")) {
-                                    JSONArray jaData = data.optJSONArray("data");
-                                    for (int i = 0; i < jaData.length(); i++) {
-                                        JSONObject joAlbum = jaData.getJSONObject(i);
-                                        JSONArray jaImages = joAlbum.getJSONArray("images");
-                                        SharedPreferences prefs = getSharedPreferences("crd", MODE_PRIVATE);
-                                        //Envoyer l'image à firebase avec le nom de l'utilisateur, le nom de son album, et son numéro
-                                        new FirebaseAdapter(MainActivity.this, nameAlb, prefs.getString("fbName", ""), i+1)
-                                                .execute(new PhotosModel(jaImages.getJSONObject(0).getString("source")).getUrlImage());
-                                    }
-                                }
+                            JSONObject data = response.getJSONObject();
+                            JSONArray jaData = data.optJSONArray("data");
+                            for (int i = 0; i < jaData.length(); i++) {
+                                JSONObject joAlbum = jaData.getJSONObject(i);
+                                JSONArray jaImages = joAlbum.getJSONArray("images");
+                                SharedPreferences prefs = getSharedPreferences("crd", MODE_PRIVATE);
+                                //Envoyer l'image à firebase avec le nom de l'utilisateur, le nom de son album, et son numéro
+                                new FirebaseAdapter(MainActivity.this, nameAlb, prefs.getString("fbName", ""), i + 1)
+                                        .execute(new PhotosModel(jaImages.getJSONObject(0).getString("source")).getUrlImage());
                             }
                         } catch (Exception ignored) {
                         }
@@ -175,26 +176,25 @@ public class MainActivity extends AppCompatActivity {
 
     //Importer tout les albums d'un utilisateur et les afficher
     private void downloadAlbums() {
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",
+        new GraphRequest(AccessToken.getCurrentAccessToken(),
+                "/" + AccessToken.getCurrentAccessToken().getUserId() + "/albums",
                 null,
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
                     @Override
                     public void onCompleted(GraphResponse response) {
                         try {
-                            if (response.getError() == null) {
-                                JSONObject data = response.getJSONObject();
-                                if (data.has("data")) {
-                                    JSONArray jaData = data.optJSONArray("data");
-                                    albumModels = new ArrayList<>();
-                                    for (int i = 0; i < jaData.length(); i++) {
-                                        JSONObject joAlbum = jaData.getJSONObject(i);
-                                        albumModels.add(new AlbumModel(joAlbum.getString("id"), joAlbum.getString("name")));
-                                    }
-                                    albumsAdapter = new AlbumsAdapter(MainActivity.this, albumModels);
-                                    recyclerView.setAdapter(albumsAdapter);
-                                }
+                            JSONObject data = response.getJSONObject();
+                            JSONArray jaData = data.optJSONArray("data");
+                            albumModels = new ArrayList<>();
+                            for (int i = 0; i < jaData.length(); i++) {
+                                JSONObject joAlbum = jaData.getJSONObject(i);
+                                albumModels.add(new AlbumModel(
+                                        joAlbum.getString("id"),
+                                        joAlbum.getString("name")));
                             }
+                            albumsAdapter = new AlbumsAdapter(MainActivity.this, albumModels);
+                            recyclerView.setAdapter(albumsAdapter);
                         } catch (Exception ignored) {
                         }
                     }

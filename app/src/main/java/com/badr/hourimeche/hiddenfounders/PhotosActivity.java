@@ -89,27 +89,25 @@ public class PhotosActivity extends AppCompatActivity {
     private void downloadImages() {
         Bundle bundle = new Bundle();
         bundle.putString("fields", "images");
-        new GraphRequest(AccessToken.getCurrentAccessToken(), "/" + albumID + "/photos",
+        new GraphRequest(
+                AccessToken.getCurrentAccessToken(),
+                "/" + albumID + "/photos",
                 bundle,
                 HttpMethod.GET,
                 new GraphRequest.Callback() {
                     @Override
                     public void onCompleted(GraphResponse response) {
                         try {
-                            if (response.getError() == null) {
-                                JSONObject data = response.getJSONObject();
-                                if (data.has("data")) {
-                                    JSONArray jaData = data.optJSONArray("data");
-                                    photosModels = new ArrayList<>();
-                                    for (int i = 0; i < jaData.length(); i++) {
-                                        JSONObject joAlbum = jaData.getJSONObject(i);
-                                        JSONArray jaImages = joAlbum.getJSONArray("images");
-                                        photosModels.add(new PhotosModel(jaImages.getJSONObject(0).getString("source")));
-                                    }
-                                    PhotosAdapter photosAdapter = new PhotosAdapter(PhotosActivity.this, photosModels);
-                                    recyclerView.setAdapter(photosAdapter);
-                                }
+                            JSONObject data = response.getJSONObject();
+                            JSONArray jaData = data.optJSONArray("data");
+                            photosModels = new ArrayList<>();
+                            for (int i = 0; i < jaData.length(); i++) {
+                                JSONArray jaImages = jaData.getJSONObject(i).getJSONArray("images");
+                                photosModels.add(new PhotosModel(
+                                        jaImages.getJSONObject(0).getString("source")));
                             }
+                            PhotosAdapter photosAdapter = new PhotosAdapter(PhotosActivity.this, photosModels);
+                            recyclerView.setAdapter(photosAdapter);
                         } catch (Exception ignored) {
                         }
                     }
