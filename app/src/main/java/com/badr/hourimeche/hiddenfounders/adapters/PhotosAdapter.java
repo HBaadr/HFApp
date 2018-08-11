@@ -9,13 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.badr.hourimeche.hiddenfounders.FullscreenActivity;
 import com.badr.hourimeche.hiddenfounders.R;
 import com.badr.hourimeche.hiddenfounders.models.PhotosModel;
+import com.badr.hourimeche.hiddenfounders.view.FullscreenActivity;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosViewHolder> {
 
@@ -46,7 +49,7 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
         Glide.with(mContext)
                 .setDefaultRequestOptions(requestOptions)
                 .load(albumModel.getUrlImage())
-                .into(holder.iv_Photo);
+                .into(holder.ivPhoto);
         holder.cvRow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,13 +67,14 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotosView
 
     class PhotosViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.cardV)
         CardView cvRow;
-        ImageView iv_Photo;
+        @BindView(R.id.img2)
+        ImageView ivPhoto;
 
         PhotosViewHolder(View itemView) {
             super(itemView);
-            iv_Photo = itemView.findViewById(R.id.img2);
-            cvRow = itemView.findViewById(R.id.cardV);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

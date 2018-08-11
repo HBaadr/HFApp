@@ -50,17 +50,6 @@
             android:layout_toRightOf="@+id/image" />
     </RelativeLayout>
 
-    <Button
-        android:id="@+id/txt4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000000"
-        android:gravity="center_horizontal"
-        android:padding="10dp"
-        android:textColor="#ffffffff"
-        android:textSize="13sp"
-        android:layout_alignParentBottom="true"/>
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerV"
         android:layout_width="match_parent"

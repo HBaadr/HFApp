@@ -1,4 +1,4 @@
-package com.badr.hourimeche.hiddenfounders;
+package com.badr.hourimeche.hiddenfounders.view;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -7,17 +7,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.badr.hourimeche.hiddenfounders.R;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class FullscreenActivity extends AppCompatActivity {
 
-    private ImageView imageView;
+    @BindView(R.id.img3)
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +29,12 @@ public class FullscreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fullscreen);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        //récupérer les éléments de la vue
+        ButterKnife.bind(this);
+
         //Importer l'url de l'image sélectionné et l'afficher en plein ecran avec la possibilité de zoomer
         String imageUrl = getIntent().getStringExtra("imageUrl");
-        imageView = (ImageView) findViewById(R.id.img3);
+
         Glide.with(this)
                 .load(imageUrl)
                 .listener(new RequestListener<Drawable>() {
