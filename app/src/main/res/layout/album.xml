@@ -23,12 +23,6 @@
                 android:padding="10dp"
                 android:textColor="#ffffffff"
                 android:textSize="20sp" />
-
-            <CheckBox
-                android:id="@+id/checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|right" />
         </FrameLayout>
 
     </android.support.v7.widget.CardView>
